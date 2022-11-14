@@ -1,24 +1,26 @@
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+from time import sleep
 
-driver = webdriver.Chrome(executable_path=r'C:\Users\lele1\OneDrive - Université de Tours\M2\Machine Learning\chromedriver.exe')
+driver = webdriver.Chrome()
 driver.get('https://www.booking.com')
-driver.implicitly_wait(20)
+
 
 #accepte les cookies
 driver.find_element(By.ID, 'onetrust-accept-btn-handler').click()
-
+sleep(2)
 #écrit Paris dans la barre de recherche
 search_bar = driver.find_element(By.CLASS_NAME, "sb-destination-label-sr")
 search_bar.send_keys('Paris')
 
+
 #clique sur rechercher
 search_bouton = driver.find_element(By.CLASS_NAME, 'xp__button')
 search_bouton.click()
-
+sleep(2)
 new_url = driver.current_url
 driver.get(new_url)
-driver.implicitly_wait(20)
+sleep(2)
 
 #accepte les cookies
 #driver.find_element(By.CLASS_NAME, 'bb0b3e18ca bad25cd8dc d9b0185ac2 ba6d71e9d5').click()
