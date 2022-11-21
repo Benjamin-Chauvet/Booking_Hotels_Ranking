@@ -2,9 +2,9 @@
 
 ## TODO
 
-1- Scraper les données d'un hotel
-2- Affiner la problématique selon les données qu'on récolte
-3- Implémenter le scraping dans la boucle
+1. Scraper les données d'un hotel
+2. Affiner la problématique selon les données qu'on récolte
+3. Implémenter le scraping dans la boucle
 
 ## Next steps
 
