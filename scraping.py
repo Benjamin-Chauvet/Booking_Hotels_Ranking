@@ -12,8 +12,10 @@ from bs4 import BeautifulSoup
 import pandas as pd
 
 
+option = webdriver.ChromeOptions()
+option.add_argument("--start-maximized")
 url = 'https://www.booking.com/searchresults.en-gb.html?label=gen173nr-1FCAMoTTjjAkgJWARoTYgBAZgBCbgBF8gBDNgBAegBAfgBA4gCAagCA7gC7IOlmwbAAgHSAiQyZjdmNDc2OS00Yjg5LTRjNjItOWE3Yi0wNTQ2YzkwOTljNmLYAgXgAgE&lang=en-gb&sid=d98fb0657b85147a603aa5741b87a9c7&sb=1&sb_lp=1&src=index&src_elem=sb&error_url=https%3A%2F%2Fwww.booking.com%2Findex.en-gb.html%3Flabel%3Dgen173nr-1FCAMoTTjjAkgJWARoTYgBAZgBCbgBF8gBDNgBAegBAfgBA4gCAagCA7gC7IOlmwbAAgHSAiQyZjdmNDc2OS00Yjg5LTRjNjItOWE3Yi0wNTQ2YzkwOTljNmLYAgXgAgE%26sid%3Dd98fb0657b85147a603aa5741b87a9c7%26sb_price_type%3Dtotal%26%26&ss=Paris%2C+France&is_ski_area=&ssne=Lyon&ssne_untouched=Lyon&checkin_year=&checkin_month=&checkout_year=&checkout_month=&efdco=1&group_adults=2&group_children=0&no_rooms=1&b_h4u_keep_filters=&from_sf=1&dest_id=-1456928&dest_type=city&search_pageview_id=007b7c295a5702a7&search_selected=true'
-driver = webdriver.Chrome()
+driver = webdriver.Chrome(options=option)
 driver.get(url)
 
 destination = 'Paris'  # 
@@ -46,7 +48,8 @@ def scrap_hotels():
     while int(driver.find_element(By.CLASS_NAME, "cfc6afb67a").text.split()[-1]) < 1000:
         hotels = driver.find_elements(By.CLASS_NAME, 'a23c043802')
         open_hotels(hotels)
-        driver.find_element('xpath', '//*[@id="search_results_table"]/div[2]/div/div/div/div[5]/div[2]/nav/div/div[3]/button').click()
+        driver.find_element(By.CSS_SELECTOR, "[aria-label='Next page']").click()
+        #driver.find_element('xpath', '//*[@id="search_results_table"]/div[2]/div/div/div/div[6]/div[2]/nav/div/div[3]/button').click() xpath a changé
         sleep(1)
 
 scrap_hotels()
