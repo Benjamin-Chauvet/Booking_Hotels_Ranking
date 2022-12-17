@@ -1,25 +1,112 @@
-"""Description.
+"""Description
 
-Librairie pour récupérer les backups html des hotels du site de Booking d'une ville donnée.
+Librairie permettant de scraper les données des hotels booking.com de la ville souhaitée à la date souhaitée.
+
+Exemple : 
+    >>> C:\path> python destination.py Londres 11 December 2022
+    Récupère les informations de tous les hotels de Londres trouvés sur booking.com pour la nuit du 11 Décembre 2022 pour 2 personnes.
 """
 
 
 from selenium import webdriver
 from selenium.webdriver.common.by import By
+from selenium.common.exceptions import NoSuchElementException, ElementClickInterceptedException, WebDriverException
 from time import sleep
 from requests import get
 from bs4 import BeautifulSoup
 import pandas as pd
-
+import sys
 
 option = webdriver.ChromeOptions()
+option.add_argument('--disable-blink-features=AutomationControlled')
 option.add_argument("--start-maximized")
-url = 'https://www.booking.com/searchresults.en-gb.html?label=gen173nr-1FCAMoTTjjAkgJWARoTYgBAZgBCbgBF8gBDNgBAegBAfgBA4gCAagCA7gC7IOlmwbAAgHSAiQyZjdmNDc2OS00Yjg5LTRjNjItOWE3Yi0wNTQ2YzkwOTljNmLYAgXgAgE&lang=en-gb&sid=d98fb0657b85147a603aa5741b87a9c7&sb=1&sb_lp=1&src=index&src_elem=sb&error_url=https%3A%2F%2Fwww.booking.com%2Findex.en-gb.html%3Flabel%3Dgen173nr-1FCAMoTTjjAkgJWARoTYgBAZgBCbgBF8gBDNgBAegBAfgBA4gCAagCA7gC7IOlmwbAAgHSAiQyZjdmNDc2OS00Yjg5LTRjNjItOWE3Yi0wNTQ2YzkwOTljNmLYAgXgAgE%26sid%3Dd98fb0657b85147a603aa5741b87a9c7%26sb_price_type%3Dtotal%26%26&ss=Paris%2C+France&is_ski_area=&ssne=Lyon&ssne_untouched=Lyon&checkin_year=&checkin_month=&checkout_year=&checkout_month=&efdco=1&group_adults=2&group_children=0&no_rooms=1&b_h4u_keep_filters=&from_sf=1&dest_id=-1456928&dest_type=city&search_pageview_id=007b7c295a5702a7&search_selected=true'
 driver = webdriver.Chrome(options=option)
-driver.get(url)
+try:
+    driver.get('https://www.booking.com/en-gb/')
+except WebDriverException:
+    print("Internet disconnected")
+    driver.quit()
 
-destination = 'Paris'  # 
+driver.implicitly_wait(4)
+
+
+try:
+    driver.find_element(By.ID, 'onetrust-accept-btn-handler').click()
+except NoSuchElementException:
+    print('No cookies on the web page')
+
+destination = 'Paris'
+try:
+    search_bar = driver.find_element(By.CLASS_NAME, "sb-destination-label-sr")
+    #search_bar = driver.find_element(By.CLASS_NAME, "ce45093752")
+except NoSuchElementException:
+    pass
+sleep(1)
+search_bar.send_keys(destination) # attention il faudra traiter si on veut "Paris" ou "Paris centre"
+sleep(1)
+
+try:
+    open_calendar = driver.find_element(By.CLASS_NAME, "xp__dates-inner")
+except NoSuchElementException:
+    pass
+open_calendar.click()
+desired_date = '30 December 2022'
+while True:
+    try:
+        driver.find_element(By.CSS_SELECTOR, f"[aria-label='{desired_date}']").click()
+        break
+    except NoSuchElementException:
+        driver.find_element(By.CSS_SELECTOR, '[data-bui-ref="calendar-next"]').click()
+
+try:
+    search_bouton = driver.find_element(By.CLASS_NAME, 'xp__button')
+    #search_bouton = driver.find_element(By.CLASS_NAME, 'e57ffa4eb5')
+except NoSuchElementException:
+    pass
+search_bouton.click()
+
+try:
+    driver.find_element(By.CSS_SELECTOR, "[aria-label='Dismiss sign in information.']").click()
+except NoSuchElementException:
+    print('No sign in message')
+
 main_page = driver.window_handles[0]
+
+def open_rooms(rooms):
+    main_window = driver.current_url
+    for room in range(0, len(rooms)):
+        sleeps = driver.find_element(By.CLASS_NAME, "bui-u-sr-only").text
+        nb_couchage = 0
+        for sleep in range(0, len(sleeps)):
+            nb_couchage += 1
+        print(nb_couchage)
+        rooms[room].click()
+        sleep(2)
+        sleep_number = driver.find_element(By.CLASS_NAME, "jq_tooltip")
+        for sleep in range(0, len(sleep_number)):
+            sleep += 1
+        print("nombre de couchage", sleep)
+        #room_window = driver.window_handles[1]
+        #driver.switch_to.window(room_window)
+        #hotel_desc = driver.find_element('xpath', '//*[@id="blocktoggleRD24344202"]/div[1]/div/div[2]').text
+        #hotel_desc = driver.find_element(By.CLASS_NAME, "hprt-lightbox-right-container hprt-lightbox-cleanuphprt-lightbox-right-container hprt-lightbox-cleanup").text
+        #hotel_desc = driver.find_element(By.CSS_SELECTOR, "#blocktoggleRD49419507 > div.room-lightbox-container.js-async-room-lightbox-container > div > div.hprt-lightbox-right-container.hprt-lightbox-cleanup").text
+        desc_tag = driver.find_elements(By.CLASS_NAME, "hprt-lightbox-cleanup")
+        """if len(desc_tag) == 1:
+            room_desc = desc_tag[0].text
+        else:   
+            room_desc = desc_tag[-1].text"""
+        room_desc = desc_tag[-1].text
+        try:
+            sqft = room_desc.split('ize ')[1].split(' m')[0]
+        except IndexError:
+            pass
+        print(sqft)
+        bed_type = driver.find_element(By.CLASS_NAME, 'rt-bed-type').text
+        print(bed_type)
+        driver.find_element(By.CLASS_NAME, "modal-mask-closeBtn").click() # close hotel desc
+        #driver.switch_to.window(main_window)
+
 
 def open_hotels(hotels):
     """Récupère les backups html des hotels d'une page."""
@@ -36,6 +123,8 @@ def open_hotels(hotels):
         print(grade)
         rating_stars = len(soupe.find_all(class_ = "b6dc9a9e69 adc357e4f1 fe621d6382"))
         print(rating_stars)
+        rooms = driver.find_elements(By.CLASS_NAME, "hprt-roomtype-icon-link ")
+        open_rooms(rooms)
         driver.close()
         driver.switch_to.window(main_page)
 
@@ -43,22 +132,14 @@ def scrap_hotels():
     """Permet de naviguer sur l'ensemble des pages et d'en récupérer les backups avec la fonction open_hotels."""
     try:
         driver.find_element(By.ID, 'onetrust-accept-btn-handler').click()
-    except:
+    except NoSuchElementException:
         print('No cookies on the web page')
-    while int(driver.find_element(By.CLASS_NAME, "cfc6afb67a").text.split()[-1]) < 1000:
+    while int(driver.find_element(By.CLASS_NAME, "cfc6afb67a").text.split()[-1]) < 50:
         hotels = driver.find_elements(By.CLASS_NAME, 'a23c043802')
         open_hotels(hotels)
         driver.find_element(By.CSS_SELECTOR, "[aria-label='Next page']").click()
         #driver.find_element('xpath', '//*[@id="search_results_table"]/div[2]/div/div/div/div[6]/div[2]/nav/div/div[3]/button').click() xpath a changé
         sleep(1)
+    driver.quit()
 
 scrap_hotels()
-
-"""def collect_backups(url): Récupère les backups html en appelant la fonction scrap_hotels et les enregistre au format csv.
-    
-    data = scrap_hotels(destination)
-    df = pd.DataFrame(data)
-    df.to_csv(f'hotels_booking_'+destination+'.csv')
-    return df
-
-collect_backups(url)"""
