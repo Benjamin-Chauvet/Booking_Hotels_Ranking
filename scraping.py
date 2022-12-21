@@ -50,17 +50,28 @@ try:
 except NoSuchElementException:
     pass
 open_calendar.click()
-desired_date = '30 December 2022'
+
+checkin_date = '15 May 2023'
+checkout_date = None
 while True:
     try:
-        driver.find_element(By.CSS_SELECTOR, f"[aria-label='{desired_date}']").click()
+        driver.find_element(By.CSS_SELECTOR, f"[aria-label='{checkin_date}']").click()
         break
     except NoSuchElementException:
         driver.find_element(By.CSS_SELECTOR, '[data-bui-ref="calendar-next"]').click()
 
+if not checkout_date:
+    pass
+else:
+    while True:
+        try:
+            driver.find_element(By.CSS_SELECTOR, f"[aria-label='{checkout_date}']").click()
+            break
+        except NoSuchElementException:
+            driver.find_element(By.CSS_SELECTOR, '[data-bui-ref="calendar-next"]').click()
+
 try:
     search_bouton = driver.find_element(By.CLASS_NAME, 'xp__button')
-    #search_bouton = driver.find_element(By.CLASS_NAME, 'e57ffa4eb5')
 except NoSuchElementException:
     pass
 search_bouton.click()
@@ -75,17 +86,20 @@ main_page = driver.window_handles[0]
 def open_rooms(rooms):
     main_window = driver.current_url
     for room in range(0, len(rooms)):
-        sleeps = driver.find_element(By.CLASS_NAME, "bui-u-sr-only").text
+        room_name = rooms[room].text
+        try:
+            sleeps = driver.find_element(By.CLASS_NAME, "rt-bed-types").text
+        except NoSuchElementException:
+            sleeps = room_name
         nb_couchage = 0
         for sleep in range(0, len(sleeps)):
             nb_couchage += 1
         print(nb_couchage)
         rooms[room].click()
-        sleep(2)
-        sleep_number = driver.find_element(By.CLASS_NAME, "jq_tooltip")
+        sleep_number = driver.find_element(By.CLASS_NAME, "jq_tooltip").text
         for sleep in range(0, len(sleep_number)):
             sleep += 1
-        print("nombre de couchage", sleep)
+        print("nombre de couchage:", sleep)
         #room_window = driver.window_handles[1]
         #driver.switch_to.window(room_window)
         #hotel_desc = driver.find_element('xpath', '//*[@id="blocktoggleRD24344202"]/div[1]/div/div[2]').text
@@ -115,14 +129,25 @@ def open_hotels(hotels):
         sleep(2)
         new_window = driver.window_handles[1]
         driver.switch_to.window(new_window)
-        name = driver.find_element(By.CLASS_NAME, "pp-header__title").text
-        print(name) # Mettre code pour scrap données par hotel (Ici récupère nom des hotels)
-        request = get(driver.current_url)
-        soupe = BeautifulSoup(request.text, features = 'lxml')
-        grade = soupe.find(class_ = "b5cd09854e d10a6220b4").text
-        print(grade)
-        rating_stars = len(soupe.find_all(class_ = "b6dc9a9e69 adc357e4f1 fe621d6382"))
-        print(rating_stars)
+        hotel_name = driver.find_element(By.CSS_SELECTOR, "h2[class='d2fee87262 pp-header__title']").text
+        hotel_adress = driver.find_element(By.CSS_SELECTOR, "span[data-node_tt_id='location_score_tooltip']").text
+        hotel_grade = driver.find_element(By.CSS_SELECTOR, "div[class='b5cd09854e d10a6220b4']").text
+        hotel_type = driver.find_element(By.CSS_SELECTOR, "span[data-testid='property-type-badge']").text
+        hotel_nb_reviews = driver.find_element(By.CSS_SELECTOR, "span[class='b5cd09854e c90c0a70d3 db63693c62']").text
+        #hotel_facilities = driver.find_element(By.CSS_SELECTOR, "div[class='db1c39e44a ceb95dad80']").text
+        hotel_facilities = driver.find_element(By.CSS_SELECTOR, "div[data-et-view='goal:hp_d_property_popular_facilities_seen']").text
+        nb_stars = driver.find_element(By.CSS_SELECTOR, "span[aria-hidden='true']").text
+        lines = driver.find_elements(By.CSS_SELECTOR, 'tr.js-rt-block-row')
+        for line in lines:
+            room_full_id = line.get_attribute("data-block-id")
+            room_id_1 = line.get_attribute("data-block-id").split("_")[0]
+            room_id_2 = line.get_attribute("data-block-id").split("_")[1]
+            room_id_3 = lines[0].get_attribute("data-block-id").split("_", 2)[-1]
+            room_id = room_id_1 + '_' + room_id_2
+            room_name = driver.find_element(By.CSS_SELECTOR, f'[data-block-id="{room_id}_{room_id_3}"]').find_element(By.CLASS_NAME, "hprt-roomtype-icon-link ").text
+            room_price = driver.find_element(By.CSS_SELECTOR, f'[data-block-id="{room_full_id}"]').find_element(By.CLASS_NAME, "prco-valign-middle-helper").text
+            max_persons = driver.find_element(By.CSS_SELECTOR, f'[data-block-id="{room_full_id}"]').find_element(By.CLASS_NAME, "bui-u-sr-only").text[-1]
+        print(hotel_name, hotel_adress, hotel_type, hotel_grade, hotel_nb_reviews, hotel_facilities, len(nb_stars), room_full_id, room_name, room_price, max_persons)
         rooms = driver.find_elements(By.CLASS_NAME, "hprt-roomtype-icon-link ")
         open_rooms(rooms)
         driver.close()
@@ -143,3 +168,12 @@ def scrap_hotels():
     driver.quit()
 
 scrap_hotels()
+
+"""def collect_backups(url): Récupère les backups html en appelant la fonction scrap_hotels et les enregistre au format csv.
+    
+    data = scrap_hotels(destination)
+    df = pd.DataFrame(data)
+    df.to_csv(f'hotels_booking_'+destination+'.csv')
+    return df
+
+collect_backups(url)"""
