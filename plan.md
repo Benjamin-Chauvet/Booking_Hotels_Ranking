@@ -3,22 +3,22 @@
 ## Webscraping
 
  - Scraper les données pour une ville avec `selenium`
- - Autres variables ?
+ - Autres variables à implémenter ?
  - Scraping sur plusieurs villes
  - Généraliser le scraping en ligne de commande
- - fichier test ?
+ - Fichier test ?
 
 ## Preprocessing
 
  - Nettoyage de données avec `pandas`
-    - Traiter NA
+    - Traiter les NA
     - Type de données
     - Créer de nouvelles variables
- - Créer  une librairie .py pour le nettoyage
- - fichier test ?
+ - Créér  une librairie .py pour le nettoyage
+ - Fichier test ?
 
 ## Machine Learning
 
  - Comparaison des différents modèles
- - Séléction et entrainement du meilleur modèle, `scikit-learn` et `keras`
+ - Sélection et entrainement du meilleur modèle, `scikit-learn` et `keras`
  - Exploitation du prédicteur avec `textual` ?
