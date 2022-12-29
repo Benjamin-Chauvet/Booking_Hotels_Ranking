@@ -1,19 +1,24 @@
-# Plan
+# Booking Hotels Ranking : Plan
 
-## TODO
+## Webscraping
 
-1. Scraper les données d'un hotel
-2. Affiner la problématique selon les données qu'on récolte
-3. Implémenter le scraping dans la boucle
+ - Scraper les données pour une ville avec `selenium`
+ - Autres variables ?
+ - Scraping sur plusieurs villes
+ - Généraliser le scraping en ligne de commande
+ - fichier test ?
 
-## Next steps
+## Preprocessing
 
-- Lancer le scraping sur plusieurs villes
-- Nettoyage de données
-- Machine Learning
+ - Nettoyage de données avec `pandas`
+    - Traiter NA
+    - Type de données
+    - Créer de nouvelles variables
+ - Créer  une librairie .py pour le nettoyage
+ - fichier test ?
 
-## Implémentations optionnelles
- 
-- Généraliser le scraping dans `destination.py`
-- Fichier python pour nettoyer les données
-- Généraliser le Machine Learning ?
+## Machine Learning
+
+ - Comparaison des différents modèles
+ - Séléction et entrainement du meilleur modèle, `scikit-learn` et `keras`
+ - Exploitation du prédicteur avec `textual` ?
