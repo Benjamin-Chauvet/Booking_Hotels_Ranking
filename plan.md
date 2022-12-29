@@ -17,6 +17,8 @@
  - Créér  une librairie .py pour le nettoyage
  - Fichier test ?
 
+## Descriptive statistics
+
 ## Machine Learning
 
  - Comparaison des différents modèles
