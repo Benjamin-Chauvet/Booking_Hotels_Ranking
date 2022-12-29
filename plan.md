@@ -14,10 +14,14 @@
     - Traiter les NA
     - Type de données
     - Créer de nouvelles variables
+    - Variables catégorielles en dummy ?
  - Créér  une librairie .py pour le nettoyage
  - Fichier test ?
 
 ## Descriptive statistics
+
+ - Nombre d'hotels, de chambres, de variantes de chambre
+ - Distribution variable expliquée (Room_price)
 
 ## Machine Learning
 
