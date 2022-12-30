@@ -12,10 +12,30 @@ from selenium import webdriver
 from selenium.webdriver.common.by import By
 from selenium.common.exceptions import NoSuchElementException, ElementClickInterceptedException, WebDriverException
 from time import sleep
-from requests import get
-from bs4 import BeautifulSoup
 import pandas as pd
 import sys
+from dataclasses import dataclass
+from serde.json import to_json
+
+@dataclass
+class Room:
+    Room_id: int
+    Room_name: str
+    Room_price: int
+    Room_sleeps: int
+    Room_promo: str
+    Room_breakfast: str
+    Room_cancellation: str
+    Room_prepayment: str
+    Room_size: int
+    Hotel_Name: str
+    Hotel_address: str
+    Hotel_grade: float
+    Hotel_type: str
+    Hotel_nb_reviews: int
+    Hotel_facilities: dict
+    Hotel_stars: int
+    Hotel_categories: dict
 
 option = webdriver.ChromeOptions()
 option.add_argument('--disable-blink-features=AutomationControlled')
@@ -28,7 +48,6 @@ except WebDriverException:
     driver.quit()
 
 driver.implicitly_wait(4)
-
 
 try:
     driver.find_element(By.ID, 'onetrust-accept-btn-handler').click()
@@ -51,7 +70,7 @@ except NoSuchElementException:
     pass
 open_calendar.click()
 
-checkin_date = '15 May 2023'
+checkin_date = '15 January 2023'
 checkout_date = None
 while True:
     try:
@@ -83,46 +102,7 @@ except NoSuchElementException:
 
 main_page = driver.window_handles[0]
 
-def open_rooms(rooms):
-    main_window = driver.current_url
-    for room in range(0, len(rooms)):
-        room_name = rooms[room].text
-        try:
-            sleeps = driver.find_element(By.CLASS_NAME, "rt-bed-types").text
-        except NoSuchElementException:
-            sleeps = room_name
-        nb_couchage = 0
-        for sleep in range(0, len(sleeps)):
-            nb_couchage += 1
-        print(nb_couchage)
-        rooms[room].click()
-        sleep_number = driver.find_element(By.CLASS_NAME, "jq_tooltip").text
-        for sleep in range(0, len(sleep_number)):
-            sleep += 1
-        print("nombre de couchage:", sleep)
-        #room_window = driver.window_handles[1]
-        #driver.switch_to.window(room_window)
-        #hotel_desc = driver.find_element('xpath', '//*[@id="blocktoggleRD24344202"]/div[1]/div/div[2]').text
-        #hotel_desc = driver.find_element(By.CLASS_NAME, "hprt-lightbox-right-container hprt-lightbox-cleanuphprt-lightbox-right-container hprt-lightbox-cleanup").text
-        #hotel_desc = driver.find_element(By.CSS_SELECTOR, "#blocktoggleRD49419507 > div.room-lightbox-container.js-async-room-lightbox-container > div > div.hprt-lightbox-right-container.hprt-lightbox-cleanup").text
-        desc_tag = driver.find_elements(By.CLASS_NAME, "hprt-lightbox-cleanup")
-        """if len(desc_tag) == 1:
-            room_desc = desc_tag[0].text
-        else:   
-            room_desc = desc_tag[-1].text"""
-        room_desc = desc_tag[-1].text
-        try:
-            sqft = room_desc.split('ize ')[1].split(' m')[0]
-        except IndexError:
-            pass
-        print(sqft)
-        bed_type = driver.find_element(By.CLASS_NAME, 'rt-bed-type').text
-        print(bed_type)
-        driver.find_element(By.CLASS_NAME, "modal-mask-closeBtn").click() # close hotel desc
-        #driver.switch_to.window(main_window)
-
-
-def open_hotels(hotels):
+def open_hotels(hotels, room_list):
     """Récupère les backups html des hotels d'une page."""
     for hotel in range(0, len(hotels)):
         hotels[hotel].click()
@@ -131,49 +111,133 @@ def open_hotels(hotels):
         driver.switch_to.window(new_window)
         hotel_name = driver.find_element(By.CSS_SELECTOR, "h2[class='d2fee87262 pp-header__title']").text
         hotel_adress = driver.find_element(By.CSS_SELECTOR, "span[data-node_tt_id='location_score_tooltip']").text
-        hotel_grade = driver.find_element(By.CSS_SELECTOR, "div[class='b5cd09854e d10a6220b4']").text
+        try:
+            hotel_grade = driver.find_element(By.CSS_SELECTOR, "div[class='b5cd09854e d10a6220b4']").text
+            hotel_nb_reviews = driver.find_element(By.CSS_SELECTOR, "span[class='b5cd09854e c90c0a70d3 db63693c62']").text
+        except NoSuchElementException:
+            hotel_grade = ''
+            hotel_nb_reviews = ''
         hotel_type = driver.find_element(By.CSS_SELECTOR, "span[data-testid='property-type-badge']").text
-        hotel_nb_reviews = driver.find_element(By.CSS_SELECTOR, "span[class='b5cd09854e c90c0a70d3 db63693c62']").text
-        #hotel_facilities = driver.find_element(By.CSS_SELECTOR, "div[class='db1c39e44a ceb95dad80']").text
-        hotel_facilities = driver.find_element(By.CSS_SELECTOR, "div[data-et-view='goal:hp_d_property_popular_facilities_seen']").text
+        #hotel_facilities = driver.find_element(By.CSS_SELECTOR, "div[data-et-view='goal:hp_d_property_popular_facilities_seen']").text
+        facilities_categories = driver.find_elements(By.CSS_SELECTOR, 'div[class="hotel-facilities-group"]')
+        hotel_facilities = {}
+        for i in range(0, len(facilities_categories)):
+            facility_category = facilities_categories[i].text.split("\n")[0]
+            hotel_facilities[f'{facility_category}'] = facilities_categories[i].text.split("\n")[1:]
         nb_stars = driver.find_element(By.CSS_SELECTOR, "span[aria-hidden='true']").text
+        hotel_nb_stars = len(nb_stars)
+        rate_categories = driver.find_elements(By.CSS_SELECTOR, 'div[data-testid="review-subscore"]')
+        hotel_categories={}
+        for i in range(0, len(rate_categories)):
+            category = rate_categories[i].text.split("\n")[0]
+            hotel_categories[f'{category}'] = rate_categories[i].text.split("\n")[1:]
+        del hotel_categories[""]
+        #hotel_data = Hotel(hotel_name, hotel_adress, hotel_grade, hotel_type, hotel_nb_reviews, len(nb_stars), hotel_facilities)
+        rooms = driver.find_elements(By.CLASS_NAME, "hprt-roomtype-link")
         lines = driver.find_elements(By.CSS_SELECTOR, 'tr.js-rt-block-row')
-        for line in lines:
-            room_full_id = line.get_attribute("data-block-id")
-            room_id_1 = line.get_attribute("data-block-id").split("_")[0]
-            room_id_2 = line.get_attribute("data-block-id").split("_")[1]
-            room_id_3 = lines[0].get_attribute("data-block-id").split("_", 2)[-1]
-            room_id = room_id_1 + '_' + room_id_2
-            room_name = driver.find_element(By.CSS_SELECTOR, f'[data-block-id="{room_id}_{room_id_3}"]').find_element(By.CLASS_NAME, "hprt-roomtype-icon-link ").text
-            room_price = driver.find_element(By.CSS_SELECTOR, f'[data-block-id="{room_full_id}"]').find_element(By.CLASS_NAME, "prco-valign-middle-helper").text
-            max_persons = driver.find_element(By.CSS_SELECTOR, f'[data-block-id="{room_full_id}"]').find_element(By.CLASS_NAME, "bui-u-sr-only").text[-1]
-        print(hotel_name, hotel_adress, hotel_type, hotel_grade, hotel_nb_reviews, hotel_facilities, len(nb_stars), room_full_id, room_name, room_price, max_persons)
-        rooms = driver.find_elements(By.CLASS_NAME, "hprt-roomtype-icon-link ")
-        open_rooms(rooms)
+        for room in range(0, len(rooms)):
+            room_id = rooms[room].get_attribute("data-room-id")
+            rooms[room].click()
+            sleep(2)
+            desc_tag = driver.find_elements(By.CLASS_NAME, "hprt-lightbox-cleanup")
+            try:
+                room_desc = desc_tag[-1].text
+                room_size = room_desc.split('ize ')[1].split(' m')[0]
+            except IndexError:
+                room_size = ''
+            driver.find_element(By.CLASS_NAME, "modal-mask-closeBtn").click()
+            for line in lines:
+                try:
+                    room_id_1 = line.get_attribute("data-block-id").split("_")[0]
+                    if room_id_1 == room_id:
+                        room_full_id = line.get_attribute("data-block-id")
+                        room_name = driver.find_element(By.CSS_SELECTOR, f'a[data-room-id="{room_id_1}"]').text
+                        room_price = driver.find_element(By.CSS_SELECTOR, f'[data-block-id="{room_full_id}"]').find_element(By.CLASS_NAME, "prco-valign-middle-helper").text
+                        room_sleeps = driver.find_element(By.CSS_SELECTOR, f'[data-block-id="{room_full_id}"]').find_element(By.CLASS_NAME, "bui-u-sr-only").text[-1]
+                        try:
+                            room_promo = driver.find_element(By.CSS_SELECTOR, '[class="bui-badge bui-badge--constructive"]').text
+                            room_breakfast = line.find_element(By.CSS_SELECTOR, '[class="bui-list__description"]').text
+                            room_cancellation = line.find_element(By.CSS_SELECTOR, '[data-testid="cancellation-subtitle"]').text
+                            room_prepayment = line.find_element(By.CSS_SELECTOR, '[data-testid="prepayment-subtitle"]').text
+                        except NoSuchElementException:
+                            room_promo = ''
+                            room_breakfast = ''
+                            room_cancellation = ''
+                            room_prepayment = ''
+                        room_data = Room(room_full_id,
+                            room_name,
+                            room_price,
+                            room_sleeps,
+                            room_promo,
+                            room_breakfast,
+                            room_cancellation,
+                            room_prepayment,
+                            room_size,
+                            hotel_name,
+                            hotel_adress,
+                            hotel_grade,
+                            hotel_type,
+                            hotel_nb_reviews,
+                            hotel_facilities,
+                            hotel_nb_stars,
+                            hotel_categories)
+                        room_list.append(room_data)
+                except NoSuchElementException:
+                    #room_name = line.find_element(By.CLASS_NAME, "hprt-roomtype-icon-link ").text
+                    room_id_1 = ''
+                    room_full_id = ''
+                    room_name = ''
+                    room_price = ''
+                    room_sleeps = ''
+                    room_choices = ''
+                    room_promo = ''
+                    room_data = Room(room_full_id,
+                            room_name,
+                            room_price,
+                            room_sleeps,
+                            room_choices,
+                            room_promo,
+                            room_size,
+                            hotel_name,
+                            hotel_adress,
+                            hotel_grade,
+                            hotel_type,
+                            hotel_nb_reviews,
+                            hotel_facilities,
+                            hotel_nb_stars,
+                            hotel_categories)
+                    room_list.append(room_data)
+                #room_name = driver.find_element(By.CSS_SELECTOR, f'[data-block-id="{room_id}_{room_id_3}"]').find_element(By.CLASS_NAME, "hprt-roomtype-icon-link ").text
+        #rooms = driver.find_elements(By.CLASS_NAME, "hprt-roomtype-icon-link ")
+        #open_rooms(rooms)
         driver.close()
         driver.switch_to.window(main_page)
+    return room_list
 
 def scrap_hotels():
     """Permet de naviguer sur l'ensemble des pages et d'en récupérer les backups avec la fonction open_hotels."""
+    room_list = []
     try:
         driver.find_element(By.ID, 'onetrust-accept-btn-handler').click()
     except NoSuchElementException:
         print('No cookies on the web page')
     while int(driver.find_element(By.CLASS_NAME, "cfc6afb67a").text.split()[-1]) < 50:
         hotels = driver.find_elements(By.CLASS_NAME, 'a23c043802')
-        open_hotels(hotels)
+        open_hotels(hotels, room_list)
         driver.find_element(By.CSS_SELECTOR, "[aria-label='Next page']").click()
-        #driver.find_element('xpath', '//*[@id="search_results_table"]/div[2]/div/div/div/div[6]/div[2]/nav/div/div[3]/button').click() xpath a changé
         sleep(1)
     driver.quit()
+    return room_list
 
-scrap_hotels()
-
-"""def collect_backups(url): Récupère les backups html en appelant la fonction scrap_hotels et les enregistre au format csv.
-    
-    data = scrap_hotels(destination)
+def collect_backups():
+    data = scrap_hotels()
     df = pd.DataFrame(data)
-    df.to_csv(f'hotels_booking_'+destination+'.csv')
+    df.to_csv(f'hotels_booking_'+destination+'_py.csv')
     return df
 
-collect_backups(url)"""
+def collect_backups():
+    json_data = to_json(scrap_hotels())
+    with open(f'hotels_'+destination+'_25.json', 'w') as fichier:
+        fichier.write(json_data)
+
+collect_backups()
