@@ -10,7 +10,7 @@ Exemple :
 
 from selenium import webdriver
 from selenium.webdriver.common.by import By
-from selenium.common.exceptions import NoSuchElementException, ElementClickInterceptedException, WebDriverException
+from selenium.common.exceptions import NoSuchElementException, ElementClickInterceptedException, WebDriverException, StaleElementReferenceException
 from time import sleep
 import pandas as pd
 import sys
@@ -105,7 +105,10 @@ main_page = driver.window_handles[0]
 def open_hotels(hotels, room_list):
     """Récupère les backups html des hotels d'une page."""
     for hotel in range(0, len(hotels)):
-        hotels[hotel].click()
+        try:
+            hotels[hotel].click()
+        except StaleElementReferenceException or ElementClickInterceptedException:
+            continue
         sleep(2)
         new_window = driver.window_handles[1]
         driver.switch_to.window(new_window)
@@ -145,10 +148,15 @@ def open_hotels(hotels, room_list):
                 room_size = room_desc.split('ize ')[1].split(' m')[0]
             except IndexError:
                 room_size = ''
-            driver.find_element(By.CLASS_NAME, "modal-mask-closeBtn").click()
+            try:
+                driver.find_element(By.CLASS_NAME, "modal-mask-closeBtn").click()
+            except NoSuchElementException:
+                pass
+                #driver.find_element(By.CLASS_NAME, "bui-modal__close").click()
             for line in lines:
                 try:
-                    room_id_1 = line.get_attribute("data-block-id").split("_")[0]
+                    room_id_1 = line.get_attribute("data-block-id")
+                    room_id_1 = room_id_1.split("_")[0]
                     if room_id_1 == room_id:
                         room_full_id = line.get_attribute("data-block-id")
                         room_name = driver.find_element(By.CSS_SELECTOR, f'a[data-room-id="{room_id_1}"]').text
@@ -156,13 +164,19 @@ def open_hotels(hotels, room_list):
                         room_sleeps = driver.find_element(By.CSS_SELECTOR, f'[data-block-id="{room_full_id}"]').find_element(By.CLASS_NAME, "bui-u-sr-only").text[-1]
                         try:
                             room_promo = driver.find_element(By.CSS_SELECTOR, '[class="bui-badge bui-badge--constructive"]').text
-                            room_breakfast = line.find_element(By.CSS_SELECTOR, '[class="bui-list__description"]').text
-                            room_cancellation = line.find_element(By.CSS_SELECTOR, '[data-testid="cancellation-subtitle"]').text
-                            room_prepayment = line.find_element(By.CSS_SELECTOR, '[data-testid="prepayment-subtitle"]').text
                         except NoSuchElementException:
                             room_promo = ''
+                        try:
+                            room_breakfast = line.find_element(By.CSS_SELECTOR, '[class="bui-list__description"]').text
+                        except NoSuchElementException:
                             room_breakfast = ''
+                        try:
+                            room_cancellation = line.find_element(By.CSS_SELECTOR, '[data-testid="cancellation-subtitle"]').text
+                        except NoSuchElementException:
                             room_cancellation = ''
+                        try:
+                            room_prepayment = line.find_element(By.CSS_SELECTOR, '[data-testid="prepayment-subtitle"]').text
+                        except NoSuchElementException:
                             room_prepayment = ''
                         room_data = Room(room_full_id,
                             room_name,
@@ -182,9 +196,11 @@ def open_hotels(hotels, room_list):
                             hotel_nb_stars,
                             hotel_categories)
                         room_list.append(room_data)
-                except NoSuchElementException:
+                #except NoSuchElementException:
+                except NoSuchElementException or AttributeError:
                     #room_name = line.find_element(By.CLASS_NAME, "hprt-roomtype-icon-link ").text
-                    room_id_1 = ''
+                    continue
+                    """room_id_1 = ''
                     room_full_id = ''
                     room_name = ''
                     room_price = ''
@@ -206,7 +222,7 @@ def open_hotels(hotels, room_list):
                             hotel_facilities,
                             hotel_nb_stars,
                             hotel_categories)
-                    room_list.append(room_data)
+                    room_list.append(room_data)"""
                 #room_name = driver.find_element(By.CSS_SELECTOR, f'[data-block-id="{room_id}_{room_id_3}"]').find_element(By.CLASS_NAME, "hprt-roomtype-icon-link ").text
         #rooms = driver.find_elements(By.CLASS_NAME, "hprt-roomtype-icon-link ")
         #open_rooms(rooms)
@@ -237,7 +253,7 @@ def collect_backups():
 
 def collect_backups():
     json_data = to_json(scrap_hotels())
-    with open(f'hotels_'+destination+'_25.json', 'w') as fichier:
+    with open(f'hotels_'+destination+'_25_v2.json', 'w') as fichier:
         fichier.write(json_data)
 
 collect_backups()
