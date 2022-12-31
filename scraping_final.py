@@ -274,7 +274,7 @@ def scrap_hotels():
         print('No cookies on the web page')
     while int(driver.find_element(By.CLASS_NAME, "cfc6afb67a").text.split()[-1]) < 1000:
         hotels = driver.find_elements(By.CLASS_NAME, 'a23c043802')
-        open_hotels(hotels[0:4], room_list)
+        open_hotels(hotels, room_list)
         driver.find_element(By.CSS_SELECTOR, "[aria-label='Next page']").click()
         sleep(1)
     driver.quit()
