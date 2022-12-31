@@ -9,7 +9,7 @@ from serde.json import from_json, to_json
 from typing import List
 import re
 
-with open("hotels_Paris_75.json", "r") as read_content:
+with open("hotels_Paris_25.json", "r") as read_content:
     df=json.load(read_content)
 
 df = pd.DataFrame(df)
@@ -87,20 +87,21 @@ def promo():
     motif = re.compile('([1-9][0-9]*)')
     groupes = df.Room_promo.str.extract(motif)
     for i in range(0, len(df)):
-        if df['Room_promo'][i] != None:
+        if df['Room_promo'][i] != "":
             df['Room_promo'][i] = groupes[0][i]
         else:
-            df['Room_promo'] == 0
+            df['Room_promo'][i] = 0
 
 def promo_bin():
     """Créer une nouvelle variable binaire à partir de Room_promo, valant 1 si promotion et 0 sinon
     """
+    df['Room_promo_bin'] = 0
     for i in range(0, len(df)):
-        if df['Room_promo'][i] != None:
-            df['Room_promo_bin'] = 1
+        if df['Room_promo'][i] != 0:
+            df['Room_promo_bin'][i] = 1
         else:
-            df['Room_promo_bin'] = 0
-        
+            df['Room_promo_bin'][i] = 0
+            
         
 price()
 address()
@@ -108,6 +109,7 @@ reviews()
 facilities()
 categories()
 promo()
+promo_bin()
 print(df)
 
 #code_json = to_json(room_list)
