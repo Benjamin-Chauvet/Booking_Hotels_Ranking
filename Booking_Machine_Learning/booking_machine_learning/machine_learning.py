@@ -6,19 +6,17 @@ Librairie de machine learning permettant de trouver le modèle le plus adéquat 
 
 from sklearn.model_selection import train_test_split, GridSearchCV, cross_val_score
 from sklearn.pipeline import Pipeline
-from sklearn.preprocessing import MinMaxScaler, PolynomialFeatures
+from sklearn.preprocessing import MinMaxScaler
 from sklearn.neighbors import KNeighborsRegressor
 from sklearn.linear_model import LogisticRegression, LinearRegression
-from sklearn.svm import SVC, SVR
+from sklearn.svm import SVR
 from sklearn.ensemble import RandomForestRegressor, GradientBoostingRegressor, AdaBoostRegressor
-from sklearn.tree import  DecisionTreeRegressor
 from sklearn.neural_network import MLPRegressor
 from sklearn.linear_model import ElasticNet
 from sklearn.linear_model import Lasso
 from sklearn.linear_model import Ridge
 from sklearn.gaussian_process import GaussianProcessRegressor
 from sklearn.naive_bayes import BernoulliNB
-from sklearn.neural_network import MLPClassifier
 
 import pandas as pd
 import numpy as np
@@ -29,8 +27,6 @@ from rich.table import Table
 
 with open("Booking_Hotels_Paris_cleaned.json", "r") as read_content:
     Paris=json.load(read_content)
-with open("Booking_Hotels_London_cleaned.json", "r") as read_content:
-    London=json.load(read_content)
     
 Paris = pd.DataFrame(Paris)    
 Paris_updated = Paris.dropna(axis=0)
@@ -111,11 +107,11 @@ pl = Pipeline(
 pl_gs = GridSearchCV(
     pl,
     {
-        'support_vecteurs__C': (0.1, 1.0, 10), #zone de sécurité, pénalisation(cb de membres de chaque famille il peut y avoir à l'extérieur de la bande)
-        'support_vecteurs__epsilon': (0.1, 1.0, 10), #zone de confiance
+        'support_vecteurs__C': (0.1, 1.0, 10), 
+        'support_vecteurs__epsilon': (0.1, 1.0, 10), 
     }
 )
-pl_gs_final = pl_gs.fit(X_tr, y_tr)
+svr_gs_final = pl_gs.fit(X_tr, y_tr)
 
 # Multi Layer Perceptron 
 pln = Pipeline(
@@ -132,25 +128,26 @@ pln_gs = GridSearchCV(
         'neurones__hidden_layer_sizes': ((25, ), (50, ), (100,), (20, 20)),
     }
 )
-pln_gs_final = pln_gs.fit(X_tr, y_tr)
+mlp_gs_final = pln_gs.fit(X_tr, y_tr)
 
 # Réseau de neurones
-pln = Pipeline(
-    [
-        ("mise_echelle", MinMaxScaler()),
-        ("neurones", MLPRegressor()),
-    ]
-)
-neurones_gs = GridSearchCV(
-    MLPClassifier(),
-    {
-        'hidden_layer_sizes': [(10,), (50,), (100,), (10, 10,)],
-        'activation': ['logistic', 'tanh', 'relu'],
-        'alpha': 10.0 ** -np.arange(1, 7)
-    } 
+# pln = Pipeline(
+#     [
+#         ("mise_echelle", MinMaxScaler()),
+#         ("neurones", MLPRegressor()),
+#     ]
+# )
+# neurones_gs = GridSearchCV(
+#     #MLPClassifier(),
+#     pln,
+#     {
+#         'hidden_layer_sizes': [(10,), (50,), (100,), (10, 10,)],
+#         'activation': ['logistic', 'tanh', 'relu'],
+#         'alpha': 10.0 ** -np.arange(1, 7)
+#     } 
     
-)
-neurones_gs_final = neurones_gs.fit(X_tr, y_tr)
+# )
+# neurones_gs_final = neurones_gs.fit(X_tr, y_tr)
 
 # Bayesian Naif
 nb = BernoulliNB()
@@ -185,16 +182,16 @@ log_gs = GridSearchCV(
 )
 log_gs_final = log_gs.fit(X_tr, y_tr)
 
-#Tableau final - A REVOIR AVEC LES X TE ET Y TE
-
 tableau = Table(
-    "modèle",
-    "score entrainement",
-    "score test",
+    "Modèle",
+    'Train score', 
+    'Test score',
+    'Cross-validation \nscore',
+    'Cross-validation \ndispersion',
     title = "Synthèse des modèles"
 )
 
-modeles = [
+models = [
     lr_final,
     ls_final,
     ri_final,
@@ -202,19 +199,24 @@ modeles = [
     knr_gs_final,
     gpr_final,
     rfr_gs_final,
-    pl_gs_final,
-    pln_gs_final,
-    neurones_gs_final,
+    svr_gs_final,
+    mlp_gs_final,
     naive_gs_final,
     log_gs_final
 ]
 
-for modele in modeles: 
-    cv_scores = cross_val_score(modele, X_tr, y_tr, cv = 5)
+for model in models:
+    if 'GridSearchCV' in str(model):
+        model_name = str(model.estimator)
+        if 'Pipeline' in str(model):
+            model_name = str(model.estimator[1])
+    else:
+        model_name = str(model)
+    cv_scores = cross_val_score(model, X_tr, y_tr, cv = 5)
     tableau.add_row(
-        str(modele),
-        str(modele.score(X_tr, y_tr)),
-        str(modele.score(X_te, y_te)),
+        str(model_name),
+        str(model.score(X_tr, y_tr)),
+        str(model.score(X_te, y_te)),
         str(cv_scores.mean()),
         str(cv_scores.std()))
 print(tableau)

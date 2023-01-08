@@ -54,40 +54,34 @@ except WebDriverException:
 
 driver.implicitly_wait(1)
 
-def search(destination: str, checkin_date: str, checkout_date = None):
+def search(destination: str, checkin_date: str, checkout_date: str = None):
     """Lance la recherche Booking selon la ville et la date souhaitée.
     """
     try:
         driver.find_element(By.ID, 'onetrust-accept-btn-handler').click()
     except NoSuchElementException:
         print('No cookies on the web page')
-    #destination = 'Paris'
     try:
-        #search_bar = driver.find_element(By.CLASS_NAME, "sb-destination-label-sr")
         search_bar = driver.find_element(By.CLASS_NAME, "sb-destination__input")
     except NoSuchElementException:
-        #search_bar = driver.find_element(By.CLASS_NAME, "sb-searchbox__button ")
         try:
             search_bar = driver.find_element(By.CSS_SELECTOR, '[aria-label="Please type your destination"]')
         except NoSuchElementException:
-            search_bar = driver.find_element(By.CLASS_NAME, "sb-destination-label-sr")
+            search_bar = driver.find_element(By.CSS_SELECTOR, '[placeholder="Where are you going?"]')
     sleep(1)
     search_bar.send_keys(destination)
     sleep(1)
     try:
         open_calendar = driver.find_element(By.CLASS_NAME, "xp__dates-inner")
     except NoSuchElementException:
-        pass
+        open_calendar = driver.find_element(By.CSS_SELECTOR, '[class="xp__input-group xp__date-time"]')
     open_calendar.click()
-
-    #checkin_date = '15 January 2023'
     while True:
         try:
             driver.find_element(By.CSS_SELECTOR, f"[aria-label='{checkin_date}']").click()
             break
         except NoSuchElementException:
             driver.find_element(By.CSS_SELECTOR, '[data-bui-ref="calendar-next"]').click()
-
     if not checkout_date:
         pass
     else:
@@ -102,7 +96,6 @@ def search(destination: str, checkin_date: str, checkout_date = None):
     except NoSuchElementException:
         search_button = driver.find_element(By.CSS_SELECTOR, '[class="sb-searchbox__button "]')
     search_button.click()
-
     try:
         driver.find_element(By.CSS_SELECTOR, "[aria-label='Dismiss sign in information.']").click()
     except NoSuchElementException:
@@ -280,14 +273,14 @@ def collect_data():
         driver.find_element(By.ID, 'onetrust-accept-btn-handler').click()
     except NoSuchElementException:
         print('No cookies on the web page')
-    #while int(driver.find_element(By.CLASS_NAME, "cfc6afb67a").text.split()[-1]) < 1000:
-    hotels = driver.find_elements(By.CLASS_NAME, 'a23c043802')
-    open_hotels(hotels[0:1], room_list)
-    driver.find_element(By.CSS_SELECTOR, "[aria-label='Next page']").click()
-    sleep(2)
+    while int(driver.find_element(By.CLASS_NAME, "cfc6afb67a").text.split()[-1]) < 1000:
+        hotels = driver.find_elements(By.CLASS_NAME, 'a23c043802')
+        open_hotels(hotels, room_list)
+        driver.find_element(By.CSS_SELECTOR, "[aria-label='Next page']").click()
+        sleep(2)
     driver.quit()
     json_data = serde.json.to_json(room_list)
-    with open(f'Booking_Hotels_'+sys.argv[1]+'.json', 'w') as fichier:
+    with open(f'Booking_Hotels.json', 'w') as fichier:
         fichier.write(json_data)
 
 collect_data()
