@@ -72,7 +72,7 @@ def search(destination: str, checkin_date: str, checkout_date: str = None):
     search_bar.send_keys(destination)
     sleep(1)
     try:
-        open_calendar = driver.find_element(By.CLASS_NAME, "xp__dates-inner")
+        open_calendar = driver.find_element(By.CSS_SELECTOR, '[data-calendar2-title="Check-in"]')
     except NoSuchElementException:
         open_calendar = driver.find_element(By.CSS_SELECTOR, '[class="xp__input-group xp__date-time"]')
     open_calendar.click()

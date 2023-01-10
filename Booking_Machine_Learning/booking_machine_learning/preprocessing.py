@@ -7,7 +7,7 @@ Librairie de nettoyage des données json brutes sortant un fichier json exploita
 import json
 import pandas as pd
 
-with open("Booking_Hotels_.json", "r") as read_content:
+with open("Booking_Hotels.json", "r") as read_content:
     df=json.load(read_content)
 
 df = pd.DataFrame(df)
@@ -105,7 +105,6 @@ def promo_bin():
         if df['Room_promo'][i] != '':
             df['Room_promo_bin'][i] = 1
 
-
 def cancellation():
     """Modifie la présentation de la variable Room_cancellation
     """
@@ -142,7 +141,6 @@ def breakfast():
     for i in range(0, len(df)):
         if 'breakfast' not in df['Room_breakfast'][i]:
             df['Room_breakfast'][i] = ""
-   
 
 def breakfast_bin():
     """Créé une variable binaire à partir de Room_breakfast, valant 1 si le petit déjeuner et inclu, 0 sinon.
@@ -186,12 +184,18 @@ def type_converter():
     df['Hotel_grade'] = df['Hotel_grade'].replace(0.0, None)
     df["Room_breakfast_price"] = df["Room_breakfast_price"].astype(float)
 
-def drop():
+def ml_file():
     """Retire lignes ayant des valeurs manquantes et sélectionne les chambres d'hotels.
     """
-    df = df.dropna(axis=0)
+    df_ml = df.dropna(axis=0)
     i = df[(df.Hotel_type != 'Hotel')].index
-    df = df.drop(i)
+    df_ml = df_ml.drop(i)
+    print(df)
+    df.to_csv('Booking_Hotels.csv', index=False)
+
+    json_data = df_ml.to_json()
+    with open('Booking_Hotels_clean.json', 'w') as file:
+        file.write(json_data)
 
 price()
 address()
@@ -208,12 +212,6 @@ breakfast_bin()
 breakfast_price()
 size()
 type_converter()
-drop()
+ml_file()
 
-print(df)
-df.to_csv('Booking_Hotels.csv', index=False)
-
-json_data = df.to_json()
-with open('Booking_Hotels_cleaned.json', 'w') as file:
-    file.write(json_data)
     
