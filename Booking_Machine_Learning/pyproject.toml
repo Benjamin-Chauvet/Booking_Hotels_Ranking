@@ -2,7 +2,7 @@
 name = "Booking_Machine_Learning"
 version = "0.1.0"
 description = ""
-authors = ["Benjamin Chauvet <benchauvet41@gmail.com>"]
+authors = ["Benjamin Chauvet <benchauvet41@gmail.com>", "Léa Brasseur <lea.brasseur41@gmail.com>"]
 
 [tool.poetry.dependencies]
 python = "^3.10"
@@ -11,6 +11,11 @@ rich = "^13.0.1"
 serde = "^0.9.0"
 pandas = "^1.5.2"
 pyserde = "^0.9.7"
+sklearn = "^0.0.post1"
+scikit-learn = "^1.2.0"
+xgboost = "^1.7.3"
+matplotlib = "^3.6.2"
+seaborn = "^0.12.2"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
