@@ -2,9 +2,9 @@
 
 ## Introduction
 
-### Purpose
-
 This project is a machine learning project to predict hotels's rooms prices of [Booking.com](https://www.booking.com/en-gb/) in order to help the consumer in his choices.
+
+### Purpose
 
 Tourism industry is very volatile in terms of prices whether on the destination or the period of the year. Thus, we wanted to express rooms prices' factors with a consumer approach such with a given destination at a given date, the model was able to tell wheter an hotel room is a good (or not) characteritics/price ratio compared the competition at this destination for the same date. The idea is to predict the hotel room's price depending on its characteristics with a model trained on competitors hotels and then to compare this predicted price on the real price given by Booking. If the ratio is positive which means the price predicted by the model is lower than the real price on Booking, we could admit this room is at a low price given its characteristics. The output was to build an app for consumers usage with objectives to compare several hotels' rooms in order to
 
