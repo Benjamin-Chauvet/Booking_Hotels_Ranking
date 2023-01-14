@@ -55,7 +55,7 @@ The json dataset `Booking_Hotels.json` obtained from `scraping.py` is such :
 
 Our target variable `Room_prices` distribution :
 
-<img src = "booking_machine_learning/img/capture_prices.png" />
+<img src = "/booking_machine_learning/img/capture_prices.png" />
 
 Note we have a skew normal distribution with the average price $\approx$ 287€ higher than the median price $\approx$ 250€.
 
