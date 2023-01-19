@@ -1,10 +1,6 @@
 """Description
 
-Librairie permettant de scraper les données des chambres d'hotels de Booking.com selon la ville et la date souhaitée.
-
-Exemple : 
-    >>> C:\path> python scraping.py Paris 15 January 2023
-    Récupère les informations des chambres d'hotels de Paris trouvés sur booking.com pour la nuit du 15 Janvier 2023 pour 2 personnes.
+Librairie permettant de scraper les données des chambres d'hotels de booking.com selon la destination et la date souhaitée.
 """
 
 from selenium import webdriver
@@ -18,7 +14,7 @@ from selenium.common.exceptions import (
     ElementNotInteractableException,
 )
 from time import sleep
-from dataclasses import dataclass, astuple
+from dataclasses import dataclass
 import serde.json
 from typing import Tuple
 

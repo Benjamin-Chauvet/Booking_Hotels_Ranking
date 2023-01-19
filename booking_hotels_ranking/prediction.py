@@ -30,8 +30,10 @@ from rich.table import Table
 
 
 def training(df, room_to_rank):
-    """Entraine le prédicteur sur différents modèles, séléctionne le plus performant et compare les valeurs prédites
-    par ce modèle aux valeurs réelles sur les différentes chambres choisies par l'utilisateur."""
+    """
+    Entraine le prédicteur sur différents modèles, séléctionne le plus performant et compare les valeurs prédites
+    par ce modèle aux valeurs réelles sur les différentes chambres choisies par l'utilisateur.
+    """
     list_facilities = []
     for i in range(0, len(df)):
         for keys, values in df["Hotel_facilities"][i].items():
