@@ -22,7 +22,7 @@ app = typer.Typer()
 
 
 @app.command()
-def scraping(
+def ranking(
     destination: str, checkin_date: Tuple[int, str, int], room_to_rank: List[str]
 ):
     collect_data(destination, checkin_date)
