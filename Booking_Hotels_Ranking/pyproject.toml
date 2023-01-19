@@ -1,0 +1,28 @@
+[tool.poetry]
+name = "Booking_Hotels_Ranking"
+version = "0.1.0"
+description = ""
+authors = ["Benjamin CHAUVET <benjamin.chauvet-2@etu.univ-tours.fr>"]
+
+[tool.poetry.dependencies]
+python = "^3.10"
+selenium = "^4.7.2"
+rich = "^13.1.0"
+serde = "^0.9.0"
+pandas = "^1.5.2"
+matplotlib = "^3.6.3"
+seaborn = "^0.12.2"
+sklearn = "^0.0.post1"
+scikit-learn = "^1.2.0"
+xgboost = "^1.7.3"
+pyserde = "^0.9.7"
+typer = "^0.7.0"
+Janitor = "^0.1.1"
+
+[tool.poetry.dev-dependencies]
+pytest = "^5.2"
+black = "^22.12.0"
+
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
