@@ -118,9 +118,9 @@ After training on several models, we get the overview :
 
 As we implemented boosting regressors lately, our best model was the random forest one with **96.7%** mean accuracy on cross-validation data.
 
-![Features](img/caputre_features.png =x250)
+<img src="img/caputre_features.png" width="200"/>
 
-![True/pred](img/capture_true_pred_plot.png)
+<img src="img/capture_true_pred_plot.png" width="800"/>
 
 ![Ranking](img/capture_ranking.png)
 
