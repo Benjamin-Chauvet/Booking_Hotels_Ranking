@@ -153,3 +153,4 @@ Due to complex pricing in the tourism industry and volative prices in terms of d
 
 - Scraping tags' automation.
 - Implement more features to get a more robust model.
+- Write a more user friendly documentation.
