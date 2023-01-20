@@ -2,7 +2,7 @@
 
 ## Introduction
 
-### Purpose
+### Objectives
 
 This project is a machine learning project to predict hotels's rooms prices of [Booking.com](https://www.booking.com/en-gb/) in order to help the consumer in his choices.
 
@@ -13,8 +13,7 @@ Tourism industry is very volatile in terms of prices whether on the destination 
 Application's steps :
 1. Data collection from [Booking.com](https://www.booking.com/en-gb/) on destination and period choose by consumer.
 2. Data cleaning and preprocessing to get a dataset ready for machine learning.
-3. Models training and hyperparameters optimisation
-4. Best model selection and comparison of true values to predicted values.
+3. Models training with hyperparameters optimization, best model selection and comparison of true values to predicted values on given rooms.
 
 ## Data collection using Web Scraping
 
