@@ -6,10 +6,11 @@
 
 This project is a machine learning project to predict hotels's rooms prices of [Booking.com](https://www.booking.com/en-gb/) in order to help the consumer in his choices.
 
-Tourism industry is very volatile in terms of prices whether on the destination or the period of the year. Thus, we wanted to express rooms prices' factors with a consumer approach such with a given destination at a given date, the model was able to tell wheter an hotel room is a good (or not) characteritics/price ratio compared the competition at this destination for the same date. The idea is to predict the hotel room's price depending on its characteristics with a model trained on competitors hotels and then to compare this predicted price on the real price given by Booking. If the ratio is positive which means the price predicted by the model is lower than the real price on Booking, we could admit this room is at a low price given its characteristics. The output was to build an app for consumers usage with objectives to compare several hotels' rooms in order to
+Tourism industry is very volatile in terms of prices whether on the destination or the period of the year. Thus, we wanted to express rooms prices' factors with a consumer approach such with a given destination at a given date, the model was able to tell wheter an hotel room is a good (or not) characteritics/price ratio compared the competition at this destination for the same date. The idea is to predict the hotel room's price depending on its characteristics with a model trained on competitors hotels and then to compare this predicted price on the real price given by Booking. If the ratio is positive which means the price predicted by the model is higher than the real price on Booking, we could admit this room is at a low price given its characteristics. The output was to build an app for consumer usage which would compare several hotels' rooms choosed to concurrency at the same destination for the same time period.
 
 ### Method
 
+Application's steps :
 1. Data collection from [Booking.com](https://www.booking.com/en-gb/) on destination and period choose by consumer.
 2. Data cleaning and preprocessing to get a dataset ready for machine learning.
 3. Models training and hyperparameters optimisation
