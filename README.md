@@ -66,6 +66,19 @@ Our target variable `Room_prices` distribution :
 
 Note we have a skew normal distribution with the average price $\approx$ 287€ higher than the median price $\approx$ 250€.
 
+![Correlations](img/capture_correlations.png)
+
+Price is positively correlated with :
+- Room size
+- Hotel stars number
+- Global Booking grade
+- Grades per category (facilities, cleanliness, comfort, location)
+- Room's number of sleeps
+
+And negatively correlated with :
+- Hotel reviews number
+- Hotel without parking
+
 ## Data preprocessing
 
 The `preprocessing.py` file clean dataset obtained from web scraping by :
