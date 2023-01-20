@@ -31,7 +31,7 @@ The app is launched using : `python -m main.py Paris 15 January 2023`
 
 ![Search](img/capture_search.png)
 
-After initialazing Booking's reseach on arguments gave by user, the program naviguates through hotels found and its rooms.
+After initialazing Booking's reseach on arguments gave by user, the program navigates through hotels found and its rooms.
 
 ## Descriptive statistics
 
@@ -64,7 +64,7 @@ Our target variable `Room_prices` distribution :
 
 ![Prix](img/capture_density.png)
 
-Note we have a skew normal distribution with the average price $\approx$ 287€ higher than the median price $\approx$ 250€.
+It has a skew normal distribution with the average price $\approx$ 287€ higher than the median price $\approx$ 250€.
 
 Now, let's look at the target variable correlations.
 
@@ -145,7 +145,7 @@ Thus, the consumers better go for rooms with a positive gap between prediction a
 
 ## Conclusion
 
-Our application can be an interesting tool to help consumers to choose between several hotels rooms. The valuable information for the user is in the predictions' results table with the gap between predicted price and real price on Booking. He better maximize this gap to get the best room for its characteritics.
+Our application can be an interesting tool to help consumers to choose between several hotels rooms. The valuable information for the user here is in the predictions' results table with the gap between predicted price and real price on Booking. He better maximize this gap to get the best room for its characteritics.
 
 Due to complex pricing in the tourism industry and volative prices in terms of destination and period, we have to rank given rooms on competitors for those same parameters. Regarding this vision, the application have to collect data at each time the user ask for it which can be very long also taking into account models' training. Furthermore, html tags of Booking website changes frequently so we better automate this part in the future. 
 
