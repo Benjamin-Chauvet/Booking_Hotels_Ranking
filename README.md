@@ -11,12 +11,12 @@ Tourism industry is very volatile in terms of prices whether on the destination 
 ### Method
 
 Application's steps :
-1. Data collection from [Booking.com](https://www.booking.com/en-gb/) on destination and period choose by consumer.
+1. Data collection from [Booking.com](https://www.booking.com/en-gb/) on stayed placed {destination} and period choose by consumer {checkin_date}.
 2. Data cleaning and preprocessing to get a dataset ready for machine learning.
-3. Models training with hyperparameters optimization, best model selection and comparison of true values to predicted values on given rooms.
+3. Models training with hyperparameters optimization, best model selection and comparison of true values to predicted values on given rooms {room_to_rank}.
 
 Command lines launcher :
- - `py -m main.py {destination} {checkin_date} {rooms_id}`
+ - `py -m main.py {destination} {checkin_date} {room_to_rank}`
 
 ## Data collection using Web Scraping
 
