@@ -89,8 +89,8 @@ After training on several models, we get the overview :
 | LinearRegression()               |    0.746     |     0.744     |                     |            |       /        |
 | Lasso()                          |    0.743     |     0.742     |                     |            |       /        |
 | Ridge()                          |    0.746     |     0.744     |                     |            |       /        |
-| ElasticNet()                     |    0.746     |     0.744     |                     |            | {'alpha': 0.015625, \n'l1_ratio': 1}        |
-| KNeighborsRegressor()            |    0.993     |     0.922     |                     |            | {'n_neighbors': 2, \n'weights': distance}  |
+| ElasticNet()                     |    0.746     |     0.744     |                     |            | {'alpha': 0.015625, \t 'l1_ratio': 1}        |
+| KNeighborsRegressor()            |    0.993     |     0.922     |                     |            | {'n_neighbors': 2, \t'weights': distance}  |
 | GaussianProcessRegressor()       |    0.994     |     0.552     |                     |            |       /        |
 | RandomForestRegressor()          |    0.992     |     0.967     |                     |            | {'n_estimator': 128, \n 'max_depth': 50,\n'min_samples_leaf': 1,\n'max_features': "auto"} |
 | SVR()                            |    0.601     |     0.571     |                     |            | {'support_vecteurs__C': 10, \n 'support_vecteurs__epsilon': 1.0}       |
