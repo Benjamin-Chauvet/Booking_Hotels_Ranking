@@ -58,9 +58,7 @@ The json dataset `Booking_Hotels.json` obtained from `scraping.py` is such :
 | `Hotel_stars`       | int   | Hotel's number stars                                   |  /  |
 | `Hotel_categories`  | dict  | Hotel's grades category (Staff, Comfort, Location ...) |  /  |
 
-Note we had missing values for some variables chosen for modelization :
-
-![NA](img/capture_na.png)
+Note we had few missing values for `Room_size` and `Hotel_grade` variables which are important for modelization.
 
 Our target variable `Room_prices` distribution :
 
@@ -79,6 +77,21 @@ The `preprocessing.py` file clean dataset obtained from web scraping by :
 - Creating the final dataset for machine learning.
 
 ## Machine Learning
+
+The `prediction.py` file use arguments :
+- *df* as the cleaned dataset.
+- *room_to_rank* the rooms' id list that user wants to compare to competition.
+
+After training on several models, we get the overview :
+
+| Model            | Train score  | Mean CV score                                            | NA  |
+| ------------------- | ----- | ------------------------------------------------------ | ----|
+| `Room_id`           | str   | Room's option ID number                                |  /  |
+| `Room_name`         | str   | Room name                                              |  /  |
+| `Room_price`        | int   | Room price for selected duration                       |  /  |
+| `Room_sleeps`       | int   | Room's option total occupancy                          |  /  |
+| `Room_promo`        | str   | Room price promotion (square meters)                   |  /  |
+| `Room_breakfast`    | str   | Room's option information about breakfast              |  /  |
 
 ## Conclusion
 
