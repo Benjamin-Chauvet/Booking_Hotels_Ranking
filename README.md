@@ -15,8 +15,8 @@ Application's steps :
 2. Data cleaning and preprocessing to get a dataset ready for machine learning.
 3. Models training with hyperparameters optimization, best model selection and comparison of true values to predicted values on given rooms.
 
-Launch application in command lines :
- - py -m main.py {destination}{checkin_date}{rooms_id}
+Command lines launcher :
+ - `py -m main.py {destination} {checkin_date} {rooms_id}`
 
 ## Data collection using Web Scraping
 
