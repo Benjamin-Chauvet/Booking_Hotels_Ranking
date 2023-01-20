@@ -89,14 +89,14 @@ After training on several models, we get the overview :
 | LinearRegression()               |    0.746     |     0.744     |                     |            |       /        |
 | Lasso()                          |    0.743     |     0.742     |                     |            |       /        |
 | Ridge()                          |    0.746     |     0.744     |                     |            |       /        |
-| ElasticNet()                     |    0.746     |     0.744     |                     |            | {'alpha': 0.015625, \t 'l1_ratio': 1}        |
-| KNeighborsRegressor()            |    0.993     |     0.922     |                     |            | {'n_neighbors': 2, \t'weights': distance}  |
+| ElasticNet()                     |    0.746     |     0.744     |                     |            | {'alpha': 0.015625, 'l1_ratio': 1}        |
+| KNeighborsRegressor()            |    0.993     |     0.922     |                     |            | {'n_neighbors': 2, 'weights': distance}  |
 | GaussianProcessRegressor()       |    0.994     |     0.552     |                     |            |       /        |
-| RandomForestRegressor()          |    0.992     |     0.967     |                     |            | {'n_estimator': 128, \n 'max_depth': 50,\n'min_samples_leaf': 1,\n'max_features': "auto"} |
-| SVR()                            |    0.601     |     0.571     |                     |            | {'support_vecteurs__C': 10, \n 'support_vecteurs__epsilon': 1.0}       |
-| MLPRegressor()                   |    0.863     |     0.852     |                     |            | {'neurones__alpha': 0.001, \n'neurones__hidden_layer_sizes': (20, 20)}              |
+| RandomForestRegressor()          |    0.992     |     0.967     |                     |            | {'n_estimator': 128, 'max_depth': 50, 'min_samples_leaf': 1,\n'max_features': "auto"} |
+| SVR()                            |    0.601     |     0.571     |                     |            | {'support_vecteurs__C': 10, support_vecteurs__epsilon': 1.0}       |
+| MLPRegressor()                   |    0.863     |     0.852     |                     |            | {'neurones__alpha': 0.001, 'neurones__hidden_layer_sizes': (20, 20)}              |
 | BernoulliNB()                    |    0.016     |     0.010     |                     |            | {'alpha': 0.78}             |
-| LogisticRegression()             |    0.011     |     0.008     |                     |            | {'C': 10.0, \n'max_iter': 100, \n'penalty': 'l2'}      |
+| LogisticRegression()             |    0.011     |     0.008     |                     |            | {'C': 10.0, 'max_iter': 100, 'penalty': 'l2'}      |
 | XGBRegressor()                   |    0.989     |     0.972     |                     |            |                |
 | GradientBoostingRegressor()      |              |               |                     |            |                |
 | AdaBoostRegressor()              |              |               |                     |            |                |
