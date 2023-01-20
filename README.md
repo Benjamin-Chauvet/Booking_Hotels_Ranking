@@ -84,14 +84,22 @@ The `prediction.py` file use arguments :
 
 After training on several models, we get the overview :
 
-| Model            | Train score  | Mean CV score                                            | NA  |
-| ------------------- | ----- | ------------------------------------------------------ | ----|
-| `Room_id`           | str   | Room's option ID number                                |  /  |
-| `Room_name`         | str   | Room name                                              |  /  |
-| `Room_price`        | int   | Room price for selected duration                       |  /  |
-| `Room_sleeps`       | int   | Room's option total occupancy                          |  /  |
-| `Room_promo`        | str   | Room price promotion (square meters)                   |  /  |
-| `Room_breakfast`    | str   | Room's option information about breakfast              |  /  |
+| Model                            | Train score  | Mean CV score | Dispersion CV score | Best score | Best params    |
+| ---------------------------------|--------------|---------------|---------------------|------------|----------------|
+| LinearRegression()               |    0.746     |     0.744     |                     |            |       /        |
+| Lasso()                          |    0.743     |     0.742     |                     |            |       /        |
+| Ridge()                          |    0.746     |     0.744     |                     |            |       /        |
+| ElasticNet()                     |    0.746     |     0.744     |                     |            | {'alpha': 0.015625, \n'l1_ratio': 1}        |
+| KNeighborsRegressor()            |    0.993     |     0.922     |                     |            | {'n_neighbors': 2, \n'weights': distance}  |
+| GaussianProcessRegressor()       |    0.994     |     0.552     |                     |            |       /        |
+| RandomForestRegressor()          |    0.992     |     0.967     |                     |            | {'n_estimator': 128, \n'max_depth': 50,\n'min_samples_leaf': 1,\n'max_features': "auto"} |
+| SVR()                            |    0.601     |     0.571     |                     |            | {'support_vecteurs__C': 10, \n'support_vecteurs__epsilon': 1.0}       |
+| MLPRegressor()                   |    0.863     |     0.852     |                     |            | {'neurones__alpha': 0.001, \n'neurones__hidden_layer_sizes': (20, 20)}              |
+| BernoulliNB()                    |    0.016     |     0.010     |                     |            | {'alpha': 0.78}             |
+| LogisticRegression()             |    0.011     |     0.008     |                     |            | {'C': 10.0, \n'max_iter': 100, \n'penalty': 'l2'}      |
+| XGBRegressor()                   |    0.989     |     0.972     |                     |            |                |
+| GradientBoostingRegressor()      |              |               |                     |            |                |
+| AdaBoostRegressor()              |              |               |                     |            |                |
 
 ## Conclusion
 
