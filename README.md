@@ -93,6 +93,8 @@ The `preprocessing.py` file clean dataset obtained from web scraping by :
 
 ## Machine Learning
 
+### Training and model selection
+
 The `prediction.py` file use arguments :
 - *df* as the cleaned dataset.
 - *room_to_rank* the rooms' id list that user wants to compare to competition.
@@ -117,12 +119,29 @@ After training on several models, we get the overview :
 | AdaBoostRegressor()              |              |               |                     |            |                |
 
 As we implemented boosting regressors lately, our best model was the random forest one with **96.7%** mean accuracy on cross-validation data.
+Let's check features importance of this model.
 
 <img src="img/caputre_features.png" width="600"/>
 
-<img src="img/capture_true_pred_plot.png" width="400"/>
+We have a predominant variable `Room_size` which explains more than 70% of price variability. We could consider implementing more variables as a next step.
+
+### Predictor exploitation
+
+Now, we're looking at our best model performance on test dataset and then, predict room's price of those given by the user.
+
+<img src="img/capture_true_pred_plot.png" width="600"/>
+
+As the plot shows, there is a pretty good prediction on test data, even for very expensive rooms. The accuracy of our random forest on test data is about **96%** which is an honorable score.
+
+The final output is this ranking table showing the gap between predicted price and the real price of the chosen rooms :
 
 ![Ranking](img/capture_ranking.png)
+
+Among the 4 rooms options gave in the `room_to_rank` list with their id :
+- 2 rooms are under-predicted (gap with negative value) : it means that the real price is quite expensive regarding their characteristics.
+- 2 rooms are over-predicted (gap with positive value) : it means that the real price is cheap regarding their characteristics.
+
+Thus, the consumers better go for rooms with a positive gap between prediction and the truth to get the best return on investment.
 
 ## Conclusion
 
