@@ -278,10 +278,10 @@ def training(df, room_to_rank):
         cv_scores = cross_val_score(model, X_tr, y_tr, cv=5)
         overview.add_row(
             str(model_name),
-            str(model.score(X_tr, y_tr)),
-            str(cv_scores.mean()),
-            str(cv_scores.std()),
-            str(best_score),
+            str(round(model.score(X_tr, y_tr), 3)),
+            str(round(cv_scores.mean(), 3)),
+            str(round(cv_scores.std(), 3)),
+            str(round(best_score, 3)),
             str(best_params),
         )
     print(overview)
