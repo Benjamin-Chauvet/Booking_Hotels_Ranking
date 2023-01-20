@@ -145,6 +145,8 @@ Thus, the consumers better go for rooms with a positive gap between prediction a
 
 ## Conclusion
 
+Our application can be an interesting tool to help consumers to choose between several hotels rooms. The valuable information for the user is in the predictions' results table with the gap between predicted price and real price on Booking. He better maximize this gap the get the best room for its characteritics.
+
 Due to complex pricing in the tourism industry and volative prices in terms of destination and period, we have to rank given rooms on competitors for those same parameters. Regarding this vision, the application have to collect data at each time the user ask for it which can be very long also taking into account models' training. Furthermore, html tags of Booking website changes frequently so we better automate this part in the future. 
 
 ### Next steps to implement
