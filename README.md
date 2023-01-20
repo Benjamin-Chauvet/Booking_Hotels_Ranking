@@ -15,6 +15,9 @@ Application's steps :
 2. Data cleaning and preprocessing to get a dataset ready for machine learning.
 3. Models training with hyperparameters optimization, best model selection and comparison of true values to predicted values on given rooms.
 
+Launch application in command lines :
+ - py -m main.py {destination}{checkin_date}{rooms_id}
+
 ## Data collection using Web Scraping
 
 The `scraping.py` file is executed in `main.py` using 2 arguments :
@@ -24,13 +27,11 @@ The `scraping.py` file is executed in `main.py` using 2 arguments :
 
 During our entire project, as an example, we choose "Paris" for destination and "15 January 2023" for checkin date.
 
+The app is launched using : `python -m main.py Paris 15 January 2023`
+
 ![Search](img/capture_search.png)
 
 After initialazing Booking's reseach on arguments gave by user, the program naviguates through hotels found and its rooms.
-
-Example with `python -m scraping.py Paris 15 January 2023`
-
-![Alt Text](.gif)
 
 ## Descriptive statistics
 
