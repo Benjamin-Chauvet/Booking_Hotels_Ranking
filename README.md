@@ -101,7 +101,7 @@ After training on several models, we get the overview :
 | GradientBoostingRegressor()      |              |               |                     |            |                |
 | AdaBoostRegressor()              |              |               |                     |            |                |
 
-As we implemented boosting regressors lately, our best model was the random forest one.
+As we implemented boosting regressors lately, our best model was the random forest one with **96.7%** mean accuracy on cross-validation data.
 
 ## Conclusion
 
