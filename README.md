@@ -37,26 +37,26 @@ After initialazing Booking's reseach on arguments gave by user, the program navi
 
 The json dataset `Booking_Hotels.json` obtained from `scraping.py` is such :
 
-| Variable            | Type  | Description                                            |
-| ------------------- | ----- | ------------------------------------------------------ |
-| `Room_id`           | str   | Room's option ID number                                |
-| `Room_name`         | str   | Room name                                              |
-| `Room_price`        | int   | Room price for selected duration                       |
-| `Room_sleeps`       | int   | Room's option total occupancy                          |
-| `Room_promo`        | str   | Room price promotion (square meters)                   |
-| `Room_breakfast`    | str   | Room's option information about breakfast              |
-| `Room_cancellation` | str   | Room's option information about cancellation           |
-| `Room_prepayment`   | str   | Room's option information about prepayment             |
-| `Room_size`         | int   | Room's option size (square meters)                     |
-| `Hotel_id`          | str   | Hotel id                                               |
-| `Hotel_name`        | str   | Hotel name                                             |
-| `Hotel_address`     | str   | Hotel address                                          |
-| `Hotel_grade`       | float | Hotel's booking grade by consumers                     |
-| `Hotel_type`        | str   | Property type (hotel, apartement, guest house ...)     |
-| `Hotel_nb_reviews`  | int   | Hotel's number of consumers' reviews                   |
-| `Hotel_facilities`  | dict  | Hotel's facilities                                     |
-| `Hotel_stars`       | int   | Hotel's number stars                                   |
-| `Hotel_categories`  | dict  | Hotel's grades category (Staff, Comfort, Location ...) |
+| Variable            | Type  | Description                                            | NA  |
+| ------------------- | ----- | ------------------------------------------------------ | ----|
+| `Room_id`           | str   | Room's option ID number                                |  /  |
+| `Room_name`         | str   | Room name                                              |  /  |
+| `Room_price`        | int   | Room price for selected duration                       |  /  |
+| `Room_sleeps`       | int   | Room's option total occupancy                          |  /  |
+| `Room_promo`        | str   | Room price promotion (square meters)                   |  /  |
+| `Room_breakfast`    | str   | Room's option information about breakfast              |  /  |
+| `Room_cancellation` | str   | Room's option information about cancellation           |  /  |
+| `Room_prepayment`   | str   | Room's option information about prepayment             |  /  |
+| `Room_size`         | int   | Room's option size (square meters)                     | 323 |
+| `Hotel_id`          | str   | Hotel id                                               |  /  |
+| `Hotel_name`        | str   | Hotel name                                             |  /  |
+| `Hotel_address`     | str   | Hotel address                                          |  /  |
+| `Hotel_grade`       | float | Hotel's booking grade by consumers                     |  7  |
+| `Hotel_type`        | str   | Property type (hotel, apartement, guest house ...)     |  /  |
+| `Hotel_nb_reviews`  | int   | Hotel's number of consumers' reviews                   |  /  |
+| `Hotel_facilities`  | dict  | Hotel's facilities                                     |  /  |
+| `Hotel_stars`       | int   | Hotel's number stars                                   |  /  |
+| `Hotel_categories`  | dict  | Hotel's grades category (Staff, Comfort, Location ...) |  /  |
 
 Note we had missing values for some variables chosen for modelization :
 
