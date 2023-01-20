@@ -145,8 +145,9 @@ Thus, the consumers better go for rooms with a positive gap between prediction a
 
 ## Conclusion
 
+Due to complex pricing in the tourism industry and volative prices in terms of destination and period, we have to rank given rooms on competitors for those same parameters. Regarding this vision, the application have to collect data at each time the user ask for it which can be very long also taking into account models' training. Furthermore, html tags of Booking website changes frequently so we better automate this part in the future. 
+
 ### Next steps to implement
 
 - Scraping tags' automation.
 - Implement more features to get a more robust model.
-- 
