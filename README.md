@@ -28,6 +28,9 @@ The `scraping.py` file is executed in `main.py` using 2 arguments :
 During our entire project, as an example, we choose "Paris" for destination and "15 January 2023" for checkin date.
 
 The app is launched using : `python -m main.py Paris 15 January 2023`
+"""sh
+python -m main.py Paris 15 January 2023
+"""
 
 ![Search](img/capture_search.png)
 
@@ -83,7 +86,7 @@ The `prediction.py` file use arguments :
 - *room_to_rank* the rooms' id list that user wants to compare to competition.
 
 After training on several models, we get the overview :
-"""sh
+
 | Model                            | Train score  | Mean CV score | Dispersion CV score | Best score | Best params    |
 | ---------------------------------|--------------|---------------|---------------------|------------|----------------|
 | LinearRegression()               |    0.746     |     0.744     |        0.016        |     /      |       /        |
@@ -100,7 +103,7 @@ After training on several models, we get the overview :
 | XGBRegressor()                   |    0.989     |     0.972     |        0.003        |   0.972    | {'learning_rate': 0.07, 'max_depth': 7}               |
 | GradientBoostingRegressor()      |              |               |                     |            |                |
 | AdaBoostRegressor()              |              |               |                     |            |                |
-"""
+
 As we implemented boosting regressors lately, our best model was the random forest one with **96.7%** mean accuracy on cross-validation data.
 
 ## Conclusion
