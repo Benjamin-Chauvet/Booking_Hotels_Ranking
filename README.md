@@ -24,6 +24,10 @@ The `scraping.py` file is executed in `main.py` using 2 arguments :
 
 During our entire project, as an example, we choose "Paris" for destination and "15 January 2023" for checkin date.
 
+![Search](img/capture_search.png)
+
+After initialazing Booking's reseach on arguments gave by user, the program naviguates through hotels found and its rooms.
+
 Example with `python -m scraping.py Paris 15 January 2023`
 
 ![Alt Text](.gif)
@@ -55,7 +59,7 @@ The json dataset `Booking_Hotels.json` obtained from `scraping.py` is such :
 
 Note we had missing values for some variables chosen for modelization :
 
-![Prix](img/capture_na.png)
+![NA](img/capture_na.png)
 
 Our target variable `Room_prices` distribution :
 
