@@ -10,12 +10,12 @@ Tourism industry is very volatile in terms of prices whether on the destination 
 
 ### Method
 
-Application's steps :
-1. Data collection from [Booking.com](https://www.booking.com/en-gb/) on stayed placed {destination} and period choose by consumer {checkin_date}.
+**Application's steps** :
+1. Data collection from [Booking.com](https://www.booking.com/en-gb/) on stayed placed `{destination}` and period choose by consumer `{checkin_date}`.
 2. Data cleaning and preprocessing to get a dataset ready for machine learning.
-3. Models training with hyperparameters optimization, best model selection and comparison of true values to predicted values on given rooms {room_to_rank}.
+3. Models training with hyperparameters optimization, best model selection and comparison of true values to predicted values on given rooms `{room_to_rank}`.
 
-Command lines launcher :
+**Command lines launcher** :
  - `py -m main.py {destination} {checkin_date} {room_to_rank}`
 
 ## Data collection using Web Scraping
@@ -69,6 +69,14 @@ Our target variable `Room_prices` distribution :
 Note we have a skew normal distribution with the average price $\approx$ 287€ higher than the median price $\approx$ 250€.
 
 ## Data preprocessing
+
+The `preprocessing.py` file clean dataset obtained from web scraping by :
+- Removing unexpected characters in str varibles.
+- Creating new variables from variables obtained.
+- Removing missing values with NaN.
+- Converting variables types.
+- Removing rooms which are not type "Hotel".
+- Creating the final dataset for machine learning.
 
 ## Machine Learning
 
