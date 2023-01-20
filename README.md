@@ -17,14 +17,18 @@ Application's steps :
 
 ## Data collection using Web Scraping
 
-The `scraping.py` file is executed in command lines using 2 parameters :
+The `scraping.py` file is executed in `main.py` using 2 arguments :
 
-- destination
-- checkin_date
+- *destination*
+- *checkin_date*
+
+During our entire project, as an example, we choose "Paris" for destination and "15 January 2023" for checkin date.
 
 Example with `python -m scraping.py Paris 15 January 2023`
 
 ![Alt Text](.gif)
+
+## Descriptive statistics
 
 The json dataset `Booking_Hotels.json` obtained from `scraping.py` is such :
 
@@ -49,9 +53,9 @@ The json dataset `Booking_Hotels.json` obtained from `scraping.py` is such :
 | `Hotel_stars`       | int   | Hotel's number stars                                   |
 | `Hotel_categories`  | dict  | Hotel's grades category (Staff, Comfort, Location ...) |
 
-## Data preprocessing
+Note we had missing values for some variables chosen for modelization :
 
-## Descriptive statistics
+![Prix](img/capture_na.png)
 
 Our target variable `Room_prices` distribution :
 
@@ -59,10 +63,13 @@ Our target variable `Room_prices` distribution :
 
 Note we have a skew normal distribution with the average price $\approx$ 287€ higher than the median price $\approx$ 250€.
 
+## Data preprocessing
+
 ## Machine Learning
 
 ## Conclusion
 
 ### Next steps to implement
 
-- Automation
+- Scraping tags' automation
+- 
