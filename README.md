@@ -128,5 +128,6 @@ As we implemented boosting regressors lately, our best model was the random fore
 
 ### Next steps to implement
 
-- Scraping tags' automation
+- Scraping tags' automation.
+- Implement more features to get a more robust model.
 - 
