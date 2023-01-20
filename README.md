@@ -152,5 +152,6 @@ Due to complex pricing in the tourism industry and volative prices in terms of d
 ### Next steps to implement
 
 - Scraping tags' automation.
+- Test our libraries.
 - Implement more features to get a more robust model.
 - Write a more user friendly documentation.
