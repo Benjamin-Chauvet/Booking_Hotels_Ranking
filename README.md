@@ -120,6 +120,8 @@ As we implemented boosting regressors lately, our best model was the random fore
 
 ![Features](img/capture_features.png)
 
+![Features](img/capture_features.png)
+
 ![True/Pred](img/capture_ture_pred_plot.png)
 
 ![Ranking](img/caputre_ranking.png)
