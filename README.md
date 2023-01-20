@@ -28,9 +28,6 @@ The `scraping.py` file is executed in `main.py` using 2 arguments :
 During our entire project, as an example, we choose "Paris" for destination and "15 January 2023" for checkin date.
 
 The app is launched using : `python -m main.py Paris 15 January 2023`
-"""sh
-python -m main.py Paris 15 January 2023
-"""
 
 ![Search](img/capture_search.png)
 
